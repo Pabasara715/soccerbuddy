@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "100640988697",
+    "project_id": "soccerbudy-auth",
+    "storage_bucket": "soccerbudy-auth.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:100640988697:android:f003c6c345abb13c5b5488",
+        "android_client_info": {
+          "package_name": "com.example.soccerbuddy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "100640988697-83rv50ml90ecp71us1vbqpeljh65g1f8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAw-aPB7SX7ZgNV6ezm4_vv_evQHhZyhBg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "100640988697-83rv50ml90ecp71us1vbqpeljh65g1f8.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "100640988697-3l4eti8nptp0emq5p9gsqcgjmoe6vm4v.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.soccerbuddy"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
