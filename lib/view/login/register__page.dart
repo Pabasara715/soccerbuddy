@@ -5,22 +5,23 @@ import 'package:soccerbuddy/components/my_button.dart';
 import 'package:soccerbuddy/components/my_textfield.dart';
 import 'package:soccerbuddy/components/square_tile.dart';
 
-class LoginPage extends StatefulWidget {
+class RegisterPage extends StatefulWidget {
   final Function()? onTap;
-  const LoginPage({super.key, required this.onTap});
+  const RegisterPage({super.key, required this.onTap});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
   //text editing controllers
   final emailController = TextEditingController();
 
   final passwordController = TextEditingController();
+  final confirmPasswordController = TextEditingController();
 
-  //sign user in method
-  void signUserIn() async {
+  //sign user up method
+  void signUserUp() async {
     showDialog(
         context: context,
         builder: (context) {
@@ -39,15 +40,43 @@ class _LoginPageState extends State<LoginPage> {
           });
     }
 
-    try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: emailController.text, password: passwordController.text);
+    void weekPasswordMessage() {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return const AlertDialog(
+              title: Text('Password should be at least 6 characters'),
+            );
+          });
+    }
 
+    void showPasswordMismatchError() {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return const AlertDialog(
+              title: Text('Passwords not match'),
+            );
+          });
+    }
+
+    //creating a user
+    try {
+      if (passwordController.text == confirmPasswordController.text) {
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+            email: emailController.text, password: passwordController.text);
+      } else {
+        Navigator.pop(context);
+        showPasswordMismatchError();
+        return;
+      }
       Navigator.pop(context); //to pop loading circle
     } on FirebaseAuthException catch (e) {
       Navigator.pop(context);
       if (e.code == 'invalid-credential') {
         wrongEmailMessage();
+      } else if (e.code == 'weak-password') {
+        weekPasswordMessage();
       }
     }
   }
@@ -62,14 +91,14 @@ class _LoginPageState extends State<LoginPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const SizedBox(height: 50),
+                  const SizedBox(height: 10),
                   const Icon(
                     Icons.sports_soccer,
                     size: 100,
                   ),
-                  const SizedBox(height: 50),
+                  const SizedBox(height: 25),
                   Text(
-                    'Welcome Back you\'ve been missed!',
+                    'Let\'s creat an account for you!',
                     style: TextStyle(
                       color: Colors.grey[700],
                       fontSize: 16,
@@ -88,22 +117,16 @@ class _LoginPageState extends State<LoginPage> {
                     obscureText: true,
                   ),
                   const SizedBox(height: 20),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Text(
-                          "Forgot Password?",
-                          style: TextStyle(color: Colors.grey[600]),
-                        ),
-                      ],
-                    ),
+                  MyTextField(
+                    controller: confirmPasswordController,
+                    hintText: 'Confirm Password',
+                    obscureText: true,
                   ),
                   const SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   MyButton(
-                    text: "Sign In",
-                    onTap: signUserIn,
+                    text: "Sign Up",
+                    onTap: signUserUp,
                   ),
                   const SizedBox(height: 20),
                   Padding(
@@ -154,7 +177,7 @@ class _LoginPageState extends State<LoginPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'Not a member?',
+                        'Already have an account',
                         style: TextStyle(color: Colors.grey[700]),
                       ),
                       const SizedBox(
@@ -163,7 +186,7 @@ class _LoginPageState extends State<LoginPage> {
                       GestureDetector(
                         onTap: widget.onTap,
                         child: const Text(
-                          'Register now',
+                          'Login now',
                           style: TextStyle(
                               color: Colors.blue, fontWeight: FontWeight.bold),
                         ),

@@ -21,8 +21,7 @@ class HomePage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text("logged in as : " + user.email!),
-              SizedBox(height: 25),
-              Image.network(user.photoURL!)
+              const SizedBox(height: 25),
             ],
           ),
         ));
