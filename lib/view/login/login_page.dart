@@ -43,8 +43,10 @@ class _LoginPageState extends State<LoginPage> {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: emailController.text, password: passwordController.text);
 
+      // ignore: use_build_context_synchronously
       Navigator.pop(context); //to pop loading circle
     } on FirebaseAuthException catch (e) {
+      // ignore: use_build_context_synchronously
       Navigator.pop(context);
       if (e.code == 'invalid-credential') {
         wrongEmailMessage();

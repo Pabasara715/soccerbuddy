@@ -70,8 +70,10 @@ class _RegisterPageState extends State<RegisterPage> {
         showPasswordMismatchError();
         return;
       }
+      // ignore: use_build_context_synchronously
       Navigator.pop(context); //to pop loading circle
     } on FirebaseAuthException catch (e) {
+      // ignore: use_build_context_synchronously
       Navigator.pop(context);
       if (e.code == 'invalid-credential') {
         wrongEmailMessage();
