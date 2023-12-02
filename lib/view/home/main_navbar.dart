@@ -53,9 +53,17 @@ class _BottomNavbarState extends State<BottomNavbar> {
             Icon(Icons.fitness_center, color: Colors.white),
             Icon(Icons.live_tv, color: Colors.white),
           ]),
-      appBar: AppBar(actions: [
-        IconButton(onPressed: _signOut, icon: const Icon(Icons.logout))
-      ]),
+      // appBar: AppBar(
+      //   actions: [
+      //     IconButton(
+      //         onPressed: _signOut,
+      //         icon: const Icon(
+      //           Icons.logout,
+      //           color: Colors.red,
+      //         ))
+      //   ],
+      //   backgroundColor: Colors.grey.shade700,
+      // ),
     );
   }
 }
