@@ -1,4 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fl_chart/fl_chart.dart';
+
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
@@ -11,7 +13,19 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+  List<int> showingTooltipOnSpots = [1, 3, 5];
+
+  List<FlSpot> get allSpots => const [
+        FlSpot(0, 1),
+        FlSpot(1, 2),
+        FlSpot(2, 1.5),
+        FlSpot(3, 3),
+        FlSpot(4, 3.5),
+        FlSpot(5, 5),
+        FlSpot(6, 8),
+      ];
   final user = FirebaseAuth.instance.currentUser!;
+  double progress = 0.5;
   String displayName = "user";
 
   Future<void> _signOut() async {
@@ -72,7 +86,7 @@ class _HomeViewState extends State<HomeView> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Welcome Back",
+                                "Welcome Back !",
                                 style: TextStyle(
                                   color: Colors.grey.shade600,
                                   fontSize: 16,
@@ -112,9 +126,8 @@ class _HomeViewState extends State<HomeView> {
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
                       colors: [
-                        Colors.black,
-                        Colors.grey,
-                        Colors.black,
+                        Color.fromARGB(255, 230, 43, 66),
+                        Color.fromARGB(255, 230, 43, 66)
                       ],
                     ),
                     borderRadius: BorderRadius.circular(media.width * 0.075),
@@ -154,13 +167,12 @@ class _HomeViewState extends State<HomeView> {
                                   ),
                                 ),
                                 SizedBox(
-                                  height: media.width * 0.01,
+                                  height: media.width * 0.02,
                                 ),
                                 Material(
                                   elevation: 5,
                                   borderRadius: BorderRadius.circular(20),
-                                  color:
-                                      const Color.fromARGB(153, 255, 105, 105),
+                                  color: Color.fromARGB(255, 181, 76, 76),
                                   child: InkWell(
                                     borderRadius: BorderRadius.circular(20),
                                     onTap: () {},
@@ -179,18 +191,21 @@ class _HomeViewState extends State<HomeView> {
                                 )
                               ],
                             ),
+                            // Change this value to represent your progress
+
                             SizedBox(
                               child: CircularPercentIndicator(
                                 animation: true,
                                 radius: 60,
-                                lineWidth: 10,
-                                percent: 0.4,
-                                progressColor: Colors.blueAccent,
-                                backgroundColor: Colors.white,
+                                lineWidth: 20,
+                                percent: progress,
+                                progressColor: Color.fromARGB(174, 254, 63, 63),
+                                backgroundColor:
+                                    Color.fromARGB(255, 255, 210, 210),
                                 circularStrokeCap: CircularStrokeCap.round,
-                                center: const Text(
-                                  '40%',
-                                  style: TextStyle(
+                                center: Text(
+                                  '${(progress * 100).toInt()}%', // Show the percentage value
+                                  style: const TextStyle(
                                     fontSize: 25,
                                     fontWeight: FontWeight.bold,
                                     color: Colors.white,
@@ -203,7 +218,40 @@ class _HomeViewState extends State<HomeView> {
                       )
                     ],
                   ),
-                )
+                ),
+                SizedBox(
+                  height: media.width * 0.05,
+                ),
+                Container(
+                    height: media.width * 0.4,
+                    width: double.maxFinite,
+                    decoration: BoxDecoration(
+                        color: Colors.grey.withOpacity(0.3),
+                        borderRadius: BorderRadius.circular(25)),
+                    child: const Stack(
+                      alignment: Alignment.topLeft,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                              vertical: 15, horizontal: 15),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                ' Your Daily Progress',
+                                style: TextStyle(
+                                  color: Colors.black54,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
+                    ))
               ],
             ),
           ),
