@@ -1,4 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fl_chart/fl_chart.dart';
+
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
@@ -11,7 +13,137 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+  LineTouchData get lineTouchData1 => LineTouchData(
+        handleBuiltInTouches: true,
+        touchTooltipData: LineTouchTooltipData(
+          tooltipBgColor: Colors.blueGrey.withOpacity(0.8),
+        ),
+      );
+  List<LineChartBarData> get lineBarsData1 => [
+        lineChartBarData1_1,
+      ];
+
+  LineChartBarData get lineChartBarData1_1 => LineChartBarData(
+        isCurved: true,
+        color: Colors.redAccent,
+        gradient: LinearGradient(colors: [
+          Colors.amber.withOpacity(0.6),
+          Colors.greenAccent.withOpacity(0.6)
+        ]),
+        barWidth: 4,
+        isStrokeCapRound: true,
+        dotData: const FlDotData(show: false),
+        belowBarData: BarAreaData(
+          show: true,
+          gradient: LinearGradient(
+            colors: [
+              ColorTween(begin: Colors.amber, end: Colors.deepPurple)
+                  .lerp(0.2)!
+                  .withOpacity(0.2),
+              ColorTween(begin: Colors.deepPurple, end: Colors.blueAccent)
+                  .lerp(0.2)!
+                  .withOpacity(0.2),
+            ],
+          ),
+        ),
+        spots: const [
+          FlSpot(1, 10),
+          FlSpot(2, 30),
+          FlSpot(3, 15),
+          FlSpot(4, 70),
+          FlSpot(5, 34),
+          FlSpot(6, 76),
+          FlSpot(7, 21),
+        ],
+      );
+
+  SideTitles rightTitles() => SideTitles(
+        getTitlesWidget: rightTitleWidgets,
+        showTitles: true,
+        interval: 20,
+        reservedSize: 40,
+      );
+  Widget rightTitleWidgets(double value, TitleMeta meta) {
+    const style = TextStyle(
+      color: Colors.black54,
+      fontSize: 12,
+    );
+    String text;
+    switch (value.toInt()) {
+      case 0:
+        text = '0%';
+        break;
+      case 20:
+        text = '20%';
+        break;
+      case 40:
+        text = '40%';
+        break;
+      case 60:
+        text = '60%';
+        break;
+      case 80:
+        text = '80%';
+        break;
+      case 100:
+        text = '100%';
+        break;
+      default:
+        return Container();
+    }
+
+    return Text(text, style: style, textAlign: TextAlign.center);
+  }
+
+  SideTitles get bottomTitles => SideTitles(
+        showTitles: true,
+        reservedSize: 32,
+        interval: 1,
+        getTitlesWidget: bottomTitleWidgets,
+      );
+
+  Widget bottomTitleWidgets(double value, TitleMeta meta) {
+    const style = TextStyle(
+      color: Colors.black54,
+      fontSize: 12,
+    );
+    Widget text;
+    switch (value.toInt()) {
+      case 1:
+        text = const Text('Sun', style: style);
+        break;
+      case 2:
+        text = const Text('Mon', style: style);
+        break;
+      case 3:
+        text = const Text('Tue', style: style);
+        break;
+      case 4:
+        text = const Text('Wed', style: style);
+        break;
+      case 5:
+        text = const Text('Thu', style: style);
+        break;
+      case 6:
+        text = const Text('Fri', style: style);
+        break;
+      case 7:
+        text = const Text('Sat', style: style);
+        break;
+      default:
+        text = const Text('');
+        break;
+    }
+
+    return SideTitleWidget(
+      axisSide: meta.axisSide,
+      space: 10,
+      child: text,
+    );
+  }
+
   final user = FirebaseAuth.instance.currentUser!;
+  double progress = 0.5;
   String displayName = "user";
 
   Future<void> _signOut() async {
@@ -32,12 +164,12 @@ class _HomeViewState extends State<HomeView> {
     var media = MediaQuery.of(context).size;
 
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-            child: Column(
+        backgroundColor: Colors.white,
+        body: SingleChildScrollView(
+            child: SafeArea(
+                child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+          child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -72,7 +204,7 @@ class _HomeViewState extends State<HomeView> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Welcome Back",
+                                "Welcome Back !",
                                 style: TextStyle(
                                   color: Colors.grey.shade600,
                                   fontSize: 16,
@@ -112,9 +244,8 @@ class _HomeViewState extends State<HomeView> {
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
                       colors: [
-                        Colors.black,
-                        Colors.grey,
-                        Colors.black,
+                        Color.fromARGB(255, 230, 43, 66),
+                        Color.fromARGB(255, 230, 43, 66)
                       ],
                     ),
                     borderRadius: BorderRadius.circular(media.width * 0.075),
@@ -154,13 +285,12 @@ class _HomeViewState extends State<HomeView> {
                                   ),
                                 ),
                                 SizedBox(
-                                  height: media.width * 0.01,
+                                  height: media.width * 0.02,
                                 ),
                                 Material(
                                   elevation: 5,
                                   borderRadius: BorderRadius.circular(20),
-                                  color:
-                                      const Color.fromARGB(153, 255, 105, 105),
+                                  color: Color.fromARGB(255, 181, 76, 76),
                                   child: InkWell(
                                     borderRadius: BorderRadius.circular(20),
                                     onTap: () {},
@@ -179,18 +309,21 @@ class _HomeViewState extends State<HomeView> {
                                 )
                               ],
                             ),
+                            // Change this value to represent your progress
+
                             SizedBox(
                               child: CircularPercentIndicator(
                                 animation: true,
                                 radius: 60,
-                                lineWidth: 10,
-                                percent: 0.4,
-                                progressColor: Colors.blueAccent,
-                                backgroundColor: Colors.white,
+                                lineWidth: 20,
+                                percent: progress,
+                                progressColor: Color.fromARGB(174, 254, 63, 63),
+                                backgroundColor:
+                                    Color.fromARGB(255, 255, 210, 210),
                                 circularStrokeCap: CircularStrokeCap.round,
-                                center: const Text(
-                                  '40%',
-                                  style: TextStyle(
+                                center: Text(
+                                  '${(progress * 100).toInt()}%', // Show the percentage value
+                                  style: const TextStyle(
                                     fontSize: 25,
                                     fontWeight: FontWeight.bold,
                                     color: Colors.white,
@@ -203,12 +336,120 @@ class _HomeViewState extends State<HomeView> {
                       )
                     ],
                   ),
-                )
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
+                ),
+                SizedBox(
+                  height: media.width * 0.05,
+                ),
+                const Text(
+                  ' Your Daily Progress',
+                  style: TextStyle(
+                    color: Colors.black54,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                SizedBox(
+                  height: media.width * 0.02,
+                ),
+                Container(
+                    padding: const EdgeInsets.only(left: 15),
+                    height: media.width * 0.5,
+                    width: double.maxFinite,
+                    child: Stack(alignment: Alignment.topLeft, children: [
+                      const Padding(
+                        padding:
+                            EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                        ),
+                      ),
+                      LineChart(LineChartData(
+                        lineTouchData: LineTouchData(
+                          enabled: true,
+                          handleBuiltInTouches: false,
+                          touchCallback: (FlTouchEvent event,
+                              LineTouchResponse? response) {
+                            if (response == null ||
+                                response.lineBarSpots == null) {
+                              return;
+                            }
+                          },
+                          mouseCursorResolver: (FlTouchEvent event,
+                              LineTouchResponse? response) {
+                            if (response == null ||
+                                response.lineBarSpots == null) {
+                              return SystemMouseCursors.basic;
+                            }
+                            return SystemMouseCursors.click;
+                          },
+                          getTouchedSpotIndicator: (LineChartBarData barData,
+                              List<int> spotIndexes) {
+                            return spotIndexes.map((index) {
+                              return TouchedSpotIndicatorData(
+                                const FlLine(
+                                  color: Colors.pink,
+                                ),
+                                FlDotData(
+                                  show: true,
+                                  getDotPainter:
+                                      (spot, percent, barData, index) =>
+                                          FlDotCirclePainter(
+                                    radius: 8,
+                                    color: Colors.blueGrey,
+                                    strokeWidth: 2,
+                                    strokeColor: Colors.black,
+                                  ),
+                                ),
+                              );
+                            }).toList();
+                          },
+                          touchTooltipData: LineTouchTooltipData(
+                            tooltipBgColor: Colors.pink,
+                            tooltipRoundedRadius: 8,
+                            getTooltipItems: (List<LineBarSpot> lineBarsSpot) {
+                              return lineBarsSpot.map((lineBarSpot) {
+                                return LineTooltipItem(
+                                  lineBarSpot.y.toString(),
+                                  const TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                );
+                              }).toList();
+                            },
+                          ),
+                        ),
+                        lineBarsData: lineBarsData1,
+                        minY: -0.5,
+                        maxY: 100,
+                        titlesData: FlTitlesData(
+                            show: true,
+                            leftTitles: AxisTitles(),
+                            topTitles: AxisTitles(),
+                            bottomTitles: AxisTitles(sideTitles: bottomTitles),
+                            rightTitles: AxisTitles(sideTitles: rightTitles())),
+                        gridData: FlGridData(
+                          show: true,
+                          drawVerticalLine: false,
+                          horizontalInterval: 18,
+                          getDrawingHorizontalLine: (value) {
+                            return FlLine(
+                              color: Colors.grey.withOpacity(0.3),
+                              strokeWidth: 1,
+                            );
+                          },
+                        ),
+                        borderData: FlBorderData(
+                          show: true,
+                          border: Border.all(
+                            color: Colors.transparent,
+                          ),
+                        ),
+                      )),
+                    ])),
+              ]),
+        ))));
   }
 }

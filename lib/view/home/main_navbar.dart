@@ -37,7 +37,7 @@ class _BottomNavbarState extends State<BottomNavbar> {
       body: PageStorage(bucket: pageBucket, child: currentTab),
       bottomNavigationBar: CurvedNavigationBar(
           backgroundColor: Colors.white,
-          color: Colors.grey.shade700,
+          color: const Color.fromARGB(255, 230, 43, 66),
           animationDuration: const Duration(milliseconds: 300),
           onTap: (index) {
             setState(() {
@@ -53,17 +53,6 @@ class _BottomNavbarState extends State<BottomNavbar> {
             Icon(Icons.fitness_center, color: Colors.white),
             Icon(Icons.live_tv, color: Colors.white),
           ]),
-      // appBar: AppBar(
-      //   actions: [
-      //     IconButton(
-      //         onPressed: _signOut,
-      //         icon: const Icon(
-      //           Icons.logout,
-      //           color: Colors.red,
-      //         ))
-      //   ],
-      //   backgroundColor: Colors.grey.shade700,
-      // ),
     );
   }
 }
