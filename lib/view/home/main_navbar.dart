@@ -2,7 +2,7 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:soccerbuddy/view/home/Pages/blank_page.dart';
+import 'package:soccerbuddy/view/home/Pages/LiveScorePage/live_score.dart';
 import 'package:soccerbuddy/view/home/Pages/blnk_2_page.dart';
 import 'package:soccerbuddy/view/home/Pages/home_view.dart';
 
@@ -20,8 +20,8 @@ class _BottomNavbarState extends State<BottomNavbar> {
 
   List<Widget> myWigets = <Widget>[
     const HomeView(),
-    BlankPage(),
-    Blank_2_page(),
+    const Blank_2_page(),
+    const LiveScorePage(),
   ];
 
   final user = FirebaseAuth.instance.currentUser!;
@@ -37,7 +37,7 @@ class _BottomNavbarState extends State<BottomNavbar> {
       body: PageStorage(bucket: pageBucket, child: currentTab),
       bottomNavigationBar: CurvedNavigationBar(
           backgroundColor: Colors.white,
-          color: const Color.fromARGB(255, 230, 43, 66),
+          color: Colors.grey,
           animationDuration: const Duration(milliseconds: 300),
           onTap: (index) {
             setState(() {

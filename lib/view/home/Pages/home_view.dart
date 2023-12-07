@@ -27,8 +27,8 @@ class _HomeViewState extends State<HomeView> {
         isCurved: true,
         color: Colors.redAccent,
         gradient: LinearGradient(colors: [
-          Colors.amber.withOpacity(0.6),
-          Colors.greenAccent.withOpacity(0.6)
+          Colors.pink.withOpacity(0.4),
+          Colors.blueAccent.withOpacity(0.4)
         ]),
         barWidth: 4,
         isStrokeCapRound: true,
@@ -37,10 +37,10 @@ class _HomeViewState extends State<HomeView> {
           show: true,
           gradient: LinearGradient(
             colors: [
-              ColorTween(begin: Colors.amber, end: Colors.deepPurple)
-                  .lerp(0.2)!
+              ColorTween(begin: Colors.pink, end: Colors.blueAccent)
+                  .lerp(0.1)!
                   .withOpacity(0.2),
-              ColorTween(begin: Colors.deepPurple, end: Colors.blueAccent)
+              ColorTween(begin: Colors.pink, end: Colors.blueAccent)
                   .lerp(0.2)!
                   .withOpacity(0.2),
             ],
@@ -65,7 +65,7 @@ class _HomeViewState extends State<HomeView> {
       );
   Widget rightTitleWidgets(double value, TitleMeta meta) {
     const style = TextStyle(
-      color: Colors.black54,
+      color: Colors.pink,
       fontSize: 12,
     );
     String text;
@@ -104,7 +104,7 @@ class _HomeViewState extends State<HomeView> {
 
   Widget bottomTitleWidgets(double value, TitleMeta meta) {
     const style = TextStyle(
-      color: Colors.black54,
+      color: Colors.pink,
       fontSize: 12,
     );
     Widget text;
@@ -164,292 +164,309 @@ class _HomeViewState extends State<HomeView> {
     var media = MediaQuery.of(context).size;
 
     return Scaffold(
-        backgroundColor: Colors.white,
-        body: SingleChildScrollView(
-            child: SafeArea(
-                child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        user.photoURL != null && user.photoURL!.isNotEmpty
-                            ? ClipOval(
-                                child: Image.network(
-                                  user.photoURL!,
-                                  width: 40,
-                                  height: 40,
-                                  fit: BoxFit.cover,
-                                ),
-                              )
-                            : const CircleAvatar(
-                                backgroundColor: Colors.grey,
-                                radius: 20,
-                                child: Icon(
-                                  Icons.account_circle,
-                                  size: 40,
-                                  color: Colors.white,
-                                ),
-                              ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                "Welcome Back !",
-                                style: TextStyle(
-                                  color: Colors.grey.shade600,
-                                  fontSize: 16,
-                                ),
-                              ),
-                              Text(
-                                displayName,
-                                style: const TextStyle(
-                                  color: Colors.black,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    IconButton(
-                      onPressed: _signOut,
-                      icon: Image.asset(
-                        "assets/img/logout.png",
-                        width: 25,
-                        height: 25,
-                        fit: BoxFit.fitHeight,
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: media.width * 0.05,
-                ),
-                Container(
-                  height: media.width * 0.42,
-                  decoration: BoxDecoration(
-                    gradient: const LinearGradient(
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      colors: [
-                        Color.fromARGB(255, 230, 43, 66),
-                        Color.fromARGB(255, 230, 43, 66)
-                      ],
-                    ),
-                    borderRadius: BorderRadius.circular(media.width * 0.075),
-                  ),
-                  child: Stack(
-                    alignment: Alignment.center,
+        backgroundColor: Colors.transparent,
+        body: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Colors.black, Colors.white], // Your gradient colors
+              begin: Alignment.topCenter, // Optional: starting point
+              end: Alignment.bottomCenter, // Optional: ending point
+              stops: [0.0, 0.7], // Optional: color stops
+              tileMode: TileMode.clamp, // Optional: repeats the gradient
+            ),
+          ),
+          child: SingleChildScrollView(
+              child: SafeArea(
+                  child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Image.asset(
-                        "assets/img/abstract.png",
-                        height: media.width * 0.4,
-                        width: double.maxFinite,
-                        fit: BoxFit.fitWidth,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            vertical: 25, horizontal: 15),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          user.photoURL != null && user.photoURL!.isNotEmpty
+                              ? ClipOval(
+                                  child: Image.network(
+                                    user.photoURL!,
+                                    width: 40,
+                                    height: 40,
+                                    fit: BoxFit.cover,
+                                  ),
+                                )
+                              : const CircleAvatar(
+                                  backgroundColor: Colors.grey,
+                                  radius: 20,
+                                  child: Icon(
+                                    Icons.account_circle,
+                                    size: 40,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 const Text(
-                                  'Today Your Progress',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                ),
-                                const Text(
-                                  "Let's get back on business",
+                                  "Welcome Back !",
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 16,
                                   ),
                                 ),
-                                SizedBox(
-                                  height: media.width * 0.02,
+                                Text(
+                                  displayName,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w700,
+                                  ),
                                 ),
-                                Material(
-                                  elevation: 5,
-                                  borderRadius: BorderRadius.circular(20),
-                                  color: Color.fromARGB(255, 181, 76, 76),
-                                  child: InkWell(
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      IconButton(
+                        onPressed: _signOut,
+                        icon: Image.asset(
+                          "assets/img/logout.png",
+                          width: 25,
+                          height: 25,
+                          fit: BoxFit.fitHeight,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: media.width * 0.05,
+                  ),
+                  Container(
+                    height: media.width * 0.42,
+                    decoration: BoxDecoration(
+                      gradient: const LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Color.fromARGB(255, 230, 43, 66),
+                          Color.fromARGB(255, 230, 43, 66)
+                        ],
+                      ),
+                      borderRadius: BorderRadius.circular(media.width * 0.075),
+                    ),
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Image.asset(
+                          "assets/img/abstract.png",
+                          height: media.width * 0.4,
+                          width: double.maxFinite,
+                          fit: BoxFit.fitWidth,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 25, horizontal: 15),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text(
+                                    'Today Your Progress',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w700,
+                                    ),
+                                  ),
+                                  const Text(
+                                    "Let's get back on business",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: media.width * 0.02,
+                                  ),
+                                  Material(
+                                    elevation: 5,
                                     borderRadius: BorderRadius.circular(20),
-                                    onTap: () {},
-                                    splashColor: Colors.white.withOpacity(0.5),
-                                    child: SizedBox(
-                                      width: media.width * 0.3,
-                                      height: media.width * 0.1,
-                                      child: const Center(
-                                        child: Text(
-                                          'View Tasks',
-                                          style: TextStyle(color: Colors.white),
+                                    color: Color.fromARGB(255, 181, 76, 76),
+                                    child: InkWell(
+                                      borderRadius: BorderRadius.circular(20),
+                                      onTap: () {},
+                                      splashColor:
+                                          Colors.white.withOpacity(0.5),
+                                      child: SizedBox(
+                                        width: media.width * 0.3,
+                                        height: media.width * 0.1,
+                                        child: const Center(
+                                          child: Text(
+                                            'View Tasks',
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                )
-                              ],
-                            ),
-                            // Change this value to represent your progress
+                                  )
+                                ],
+                              ),
+                              // Change this value to represent your progress
 
-                            SizedBox(
-                              child: CircularPercentIndicator(
-                                animation: true,
-                                radius: 60,
-                                lineWidth: 20,
-                                percent: progress,
-                                progressColor: Color.fromARGB(174, 254, 63, 63),
-                                backgroundColor:
-                                    Color.fromARGB(255, 255, 210, 210),
-                                circularStrokeCap: CircularStrokeCap.round,
-                                center: Text(
-                                  '${(progress * 100).toInt()}%', // Show the percentage value
-                                  style: const TextStyle(
-                                    fontSize: 25,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white,
+                              SizedBox(
+                                child: CircularPercentIndicator(
+                                  animation: true,
+                                  radius: 60,
+                                  lineWidth: 20,
+                                  percent: progress,
+                                  progressColor:
+                                      Color.fromARGB(174, 254, 63, 63),
+                                  backgroundColor:
+                                      Color.fromARGB(255, 255, 210, 210),
+                                  circularStrokeCap: CircularStrokeCap.round,
+                                  center: Text(
+                                    '${(progress * 100).toInt()}%', // Show the percentage value
+                                    style: const TextStyle(
+                                      fontSize: 25,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                      )
-                    ],
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
                   ),
-                ),
-                SizedBox(
-                  height: media.width * 0.05,
-                ),
-                const Text(
-                  ' Your Daily Progress',
-                  style: TextStyle(
-                    color: Colors.black54,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700,
+                  SizedBox(
+                    height: media.width * 0.05,
                   ),
-                ),
-                SizedBox(
-                  height: media.width * 0.02,
-                ),
-                Container(
-                    padding: const EdgeInsets.only(left: 15),
-                    height: media.width * 0.5,
-                    width: double.maxFinite,
-                    child: Stack(alignment: Alignment.topLeft, children: [
-                      const Padding(
-                        padding:
-                            EdgeInsets.symmetric(vertical: 15, horizontal: 15),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                  const Text(
+                    ' Your Daily Progress',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                  SizedBox(
+                    height: media.width * 0.02,
+                  ),
+                  Container(
+                      padding: const EdgeInsets.only(left: 15),
+                      height: media.width * 0.5,
+                      width: double.maxFinite,
+                      child: Stack(alignment: Alignment.topLeft, children: [
+                        const Padding(
+                          padding: EdgeInsets.symmetric(
+                              vertical: 15, horizontal: 15),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                          ),
                         ),
-                      ),
-                      LineChart(LineChartData(
-                        lineTouchData: LineTouchData(
-                          enabled: true,
-                          handleBuiltInTouches: false,
-                          touchCallback: (FlTouchEvent event,
-                              LineTouchResponse? response) {
-                            if (response == null ||
-                                response.lineBarSpots == null) {
-                              return;
-                            }
-                          },
-                          mouseCursorResolver: (FlTouchEvent event,
-                              LineTouchResponse? response) {
-                            if (response == null ||
-                                response.lineBarSpots == null) {
-                              return SystemMouseCursors.basic;
-                            }
-                            return SystemMouseCursors.click;
-                          },
-                          getTouchedSpotIndicator: (LineChartBarData barData,
-                              List<int> spotIndexes) {
-                            return spotIndexes.map((index) {
-                              return TouchedSpotIndicatorData(
-                                const FlLine(
-                                  color: Colors.pink,
-                                ),
-                                FlDotData(
-                                  show: true,
-                                  getDotPainter:
-                                      (spot, percent, barData, index) =>
-                                          FlDotCirclePainter(
-                                    radius: 8,
-                                    color: Colors.blueGrey,
-                                    strokeWidth: 2,
-                                    strokeColor: Colors.black,
+                        LineChart(LineChartData(
+                          lineTouchData: LineTouchData(
+                            enabled: true,
+                            handleBuiltInTouches: false,
+                            touchCallback: (FlTouchEvent event,
+                                LineTouchResponse? response) {
+                              if (response == null ||
+                                  response.lineBarSpots == null) {
+                                return;
+                              }
+                            },
+                            mouseCursorResolver: (FlTouchEvent event,
+                                LineTouchResponse? response) {
+                              if (response == null ||
+                                  response.lineBarSpots == null) {
+                                return SystemMouseCursors.basic;
+                              }
+                              return SystemMouseCursors.click;
+                            },
+                            getTouchedSpotIndicator: (LineChartBarData barData,
+                                List<int> spotIndexes) {
+                              return spotIndexes.map((index) {
+                                return TouchedSpotIndicatorData(
+                                  const FlLine(
+                                    color: Colors.pink,
                                   ),
-                                ),
-                              );
-                            }).toList();
-                          },
-                          touchTooltipData: LineTouchTooltipData(
-                            tooltipBgColor: Colors.pink,
-                            tooltipRoundedRadius: 8,
-                            getTooltipItems: (List<LineBarSpot> lineBarsSpot) {
-                              return lineBarsSpot.map((lineBarSpot) {
-                                return LineTooltipItem(
-                                  lineBarSpot.y.toString(),
-                                  const TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
+                                  FlDotData(
+                                    show: true,
+                                    getDotPainter:
+                                        (spot, percent, barData, index) =>
+                                            FlDotCirclePainter(
+                                      radius: 8,
+                                      color: Colors.blueGrey,
+                                      strokeWidth: 2,
+                                      strokeColor: Colors.black,
+                                    ),
                                   ),
                                 );
                               }).toList();
                             },
+                            touchTooltipData: LineTouchTooltipData(
+                              tooltipBgColor: Colors.pink,
+                              tooltipRoundedRadius: 8,
+                              getTooltipItems:
+                                  (List<LineBarSpot> lineBarsSpot) {
+                                return lineBarsSpot.map((lineBarSpot) {
+                                  return LineTooltipItem(
+                                    lineBarSpot.y.toString(),
+                                    const TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  );
+                                }).toList();
+                              },
+                            ),
                           ),
-                        ),
-                        lineBarsData: lineBarsData1,
-                        minY: -0.5,
-                        maxY: 100,
-                        titlesData: FlTitlesData(
+                          lineBarsData: lineBarsData1,
+                          minY: -0.5,
+                          maxY: 100,
+                          titlesData: FlTitlesData(
+                              show: true,
+                              leftTitles: AxisTitles(),
+                              topTitles: AxisTitles(),
+                              bottomTitles:
+                                  AxisTitles(sideTitles: bottomTitles),
+                              rightTitles:
+                                  AxisTitles(sideTitles: rightTitles())),
+                          gridData: FlGridData(
                             show: true,
-                            leftTitles: AxisTitles(),
-                            topTitles: AxisTitles(),
-                            bottomTitles: AxisTitles(sideTitles: bottomTitles),
-                            rightTitles: AxisTitles(sideTitles: rightTitles())),
-                        gridData: FlGridData(
-                          show: true,
-                          drawVerticalLine: false,
-                          horizontalInterval: 18,
-                          getDrawingHorizontalLine: (value) {
-                            return FlLine(
-                              color: Colors.grey.withOpacity(0.3),
-                              strokeWidth: 1,
-                            );
-                          },
-                        ),
-                        borderData: FlBorderData(
-                          show: true,
-                          border: Border.all(
-                            color: Colors.transparent,
+                            drawVerticalLine: false,
+                            horizontalInterval: 18,
+                            getDrawingHorizontalLine: (value) {
+                              return FlLine(
+                                color: Colors.grey.withOpacity(0.1),
+                                strokeWidth: 1,
+                              );
+                            },
                           ),
-                        ),
-                      )),
-                    ])),
-              ]),
-        ))));
+                          borderData: FlBorderData(
+                            show: true,
+                            border: Border.all(
+                              color: Colors.transparent,
+                            ),
+                          ),
+                        )),
+                      ])),
+                ]),
+          ))),
+        ));
   }
 }
