@@ -37,7 +37,13 @@ class _PagebodyState extends State<Pagebody> {
                       widget.allmatches![selectedMatchIndex].home.name,
                     )
                   else
-                    Container(), // Placeholder or alternative content
+                    (Text(
+                      "NO LIVE MATCHES TO SHOW",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w500),
+                    )), // Placeholder or alternative content
 
                   if (widget.allmatches != null &&
                       widget.allmatches!.isNotEmpty)

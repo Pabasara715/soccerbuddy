@@ -12,7 +12,7 @@ class SoccerApi {
   //the null means that the match didn't started yet
   //let's fix that
   final String apiUrl = "https://v3.football.api-sports.io/fixtures?live=all";
-  //  "https://v3.football.api-sports.io/fixtures?season=2023&league=2";
+  // "https://v3.football.api-sports.io/fixtures?season=2023&league=2";
   //In our tutorial we will only see how to get the live matches
   //make sure to read the api documentation to be ables too understand it
 

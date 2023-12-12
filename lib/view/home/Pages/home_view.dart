@@ -27,24 +27,18 @@ class _HomeViewState extends State<HomeView> {
         isCurved: true,
         color: Colors.redAccent,
         gradient: LinearGradient(colors: [
-          Colors.pink.withOpacity(0.4),
-          Colors.blueAccent.withOpacity(0.4)
+          Colors.pink.withOpacity(0.2),
+          Colors.blueAccent.withOpacity(0.2)
         ]),
-        barWidth: 4,
+        barWidth: 2,
         isStrokeCapRound: true,
         dotData: const FlDotData(show: false),
         belowBarData: BarAreaData(
           show: true,
-          gradient: LinearGradient(
-            colors: [
-              ColorTween(begin: Colors.pink, end: Colors.blueAccent)
-                  .lerp(0.1)!
-                  .withOpacity(0.2),
-              ColorTween(begin: Colors.pink, end: Colors.blueAccent)
-                  .lerp(0.2)!
-                  .withOpacity(0.2),
-            ],
-          ),
+          gradient: LinearGradient(colors: [
+            Colors.pink.withOpacity(0.3),
+            Colors.blueAccent.withOpacity(0.2)
+          ], begin: Alignment.topCenter, end: Alignment.bottomCenter),
         ),
         spots: const [
           FlSpot(1, 10),
@@ -168,10 +162,13 @@ class _HomeViewState extends State<HomeView> {
         body: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
-              colors: [Colors.black, Colors.white], // Your gradient colors
+              colors: [
+                Color.fromARGB(255, 0, 0, 0),
+                Color.fromARGB(255, 134, 134, 134)
+              ], // Your gradient colors
               begin: Alignment.topCenter, // Optional: starting point
               end: Alignment.bottomCenter, // Optional: ending point
-              stops: [0.0, 0.7], // Optional: color stops
+              stops: [0.0, 0.8], // Optional: color stops
               tileMode: TileMode.clamp, // Optional: repeats the gradient
             ),
           ),
@@ -440,8 +437,8 @@ class _HomeViewState extends State<HomeView> {
                           maxY: 100,
                           titlesData: FlTitlesData(
                               show: true,
-                              leftTitles: AxisTitles(),
-                              topTitles: AxisTitles(),
+                              leftTitles: const AxisTitles(),
+                              topTitles: const AxisTitles(),
                               bottomTitles:
                                   AxisTitles(sideTitles: bottomTitles),
                               rightTitles:
