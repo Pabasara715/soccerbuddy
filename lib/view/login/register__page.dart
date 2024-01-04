@@ -1,9 +1,13 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:soccerbuddy/Services/auth_service.dart';
 import 'package:soccerbuddy/components/my_button.dart';
 import 'package:soccerbuddy/components/my_textfield.dart';
 import 'package:soccerbuddy/components/square_tile.dart';
+import 'package:soccerbuddy/models/users.dart';
+import 'package:soccerbuddy/repository/user_repository.dart';
 
 class RegisterPage extends StatefulWidget {
   final Function()? onTap;
@@ -19,6 +23,11 @@ class _RegisterPageState extends State<RegisterPage> {
 
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
+
+  final userRepo = Get.put(UserRepository());
+  void createUser(users user) {
+    userRepo.creatUser(user);
+  }
 
   //sign user up method
   void signUserUp() async {
@@ -65,6 +74,11 @@ class _RegisterPageState extends State<RegisterPage> {
       if (passwordController.text == confirmPasswordController.text) {
         await FirebaseAuth.instance.createUserWithEmailAndPassword(
             email: emailController.text, password: passwordController.text);
+        final user = users(
+          username: emailController.text.trim(),
+          password: passwordController.text.trim(),
+        );
+        createUser(user);
       } else {
         Navigator.pop(context);
         showPasswordMismatchError();

@@ -163,8 +163,8 @@ class _HomeViewState extends State<HomeView> {
           decoration: const BoxDecoration(
             gradient: LinearGradient(
               colors: [
-                Color.fromARGB(255, 0, 0, 0),
-                Color.fromARGB(255, 134, 134, 134)
+                Color.fromARGB(255, 10, 5, 7),
+                Color.fromARGB(255, 255, 255, 255)
               ], // Your gradient colors
               begin: Alignment.topCenter, // Optional: starting point
               end: Alignment.bottomCenter, // Optional: ending point

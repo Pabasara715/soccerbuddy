@@ -3,8 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:soccerbuddy/view/home/Pages/LiveScorePage/live_score.dart';
+import 'package:soccerbuddy/view/home/Pages/Skills/skill_drawer.dart';
 import 'package:soccerbuddy/view/home/Pages/home_view.dart';
-import 'package:soccerbuddy/view/home/Pages/workout_schedule_view.dart';
 
 class BottomNavbar extends StatefulWidget {
   const BottomNavbar({super.key});
@@ -20,7 +20,7 @@ class _BottomNavbarState extends State<BottomNavbar> {
 
   List<Widget> myWigets = <Widget>[
     const HomeView(),
-    const WorkoutScheduleView(),
+    const SkillDrawer(),
     const LiveScorePage(),
   ];
 
