@@ -1,7 +1,10 @@
 import 'package:calendar_agenda/calendar_agenda.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:soccerbuddy/common/common.dart';
 import 'package:soccerbuddy/common_widget/round_button.dart';
+import 'package:soccerbuddy/models/skill.dart';
 import 'add_schedule_view.dart';
 
 class WorkoutScheduleView extends StatefulWidget {
@@ -13,10 +16,33 @@ class WorkoutScheduleView extends StatefulWidget {
   State<WorkoutScheduleView> createState() => _WorkoutScheduleViewState();
 }
 
+final user = FirebaseAuth.instance.currentUser!;
+
 class _WorkoutScheduleViewState extends State<WorkoutScheduleView> {
+  @override
+  void initState() {
+    super.initState();
+
+    _selectedDateAppBBar = DateTime.now();
+    setDayEventWorkoutList();
+  }
+
   final CalendarAgendaController _calendarAgendaControllerAppBar =
       CalendarAgendaController();
   late DateTime _selectedDateAppBBar;
+
+  Map<String, dynamic> userData = {};
+  
+  void getUserData(String username) async {
+    var collection = FirebaseFirestore.instance.collection('Users');
+    var docSnapshot =
+        await collection.where('Username', isEqualTo: username).get();
+    if (docSnapshot.docs.isNotEmpty) {
+      var doc = docSnapshot.docs.first;
+      userData = doc.data();
+      print(userData);
+    }
+  }
 
   List eventArr = [
     {
@@ -59,14 +85,8 @@ class _WorkoutScheduleViewState extends State<WorkoutScheduleView> {
 
   List selectDayEventArr = [];
 
-  @override
-  void initState() {
-    super.initState();
-    _selectedDateAppBBar = DateTime.now();
-    setDayEventWorkoutList();
-  }
-
   void setDayEventWorkoutList() {
+    getUserData(user.email!);
     var date = dateToStartDate(_selectedDateAppBBar);
     selectDayEventArr = eventArr.map((wObj) {
       return {
@@ -312,6 +332,7 @@ class _WorkoutScheduleViewState extends State<WorkoutScheduleView> {
       ),
       floatingActionButton: InkWell(
         onTap: () {
+          getUserData(user.email!);
           Navigator.push(
               context,
               MaterialPageRoute(

@@ -34,8 +34,15 @@ class AuthService {
       if (user != null) {
         final userRepo = Get.put(UserRepository());
         final user_g = users(
+          id: user.email!,
           username: user.email!,
           password: "google.user",
+          events: [
+            {
+              'name': 'Sample Event',
+              'start_time': '2023-01-01 10:00 AM',
+            }
+          ],
         );
 
         userRepo.creatUser(user_g);

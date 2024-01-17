@@ -2,8 +2,13 @@ import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:soccerbuddy/common_widget/step_detail_row.dart';
+import 'package:soccerbuddy/models/skill.dart';
 import 'package:soccerbuddy/view/home/Pages/LiveScorePage/live_score.dart';
+import 'package:soccerbuddy/view/home/Pages/Shedule_Skill.dart';
 import 'package:soccerbuddy/view/home/Pages/Skills/skill_drawer.dart';
+import 'package:soccerbuddy/view/home/Pages/Skills/skill_step_detials.dart';
+import 'package:soccerbuddy/view/home/Pages/WorkOutSchedule/workout_schedule_view.dart';
 import 'package:soccerbuddy/view/home/Pages/home_view.dart';
 
 class BottomNavbar extends StatefulWidget {
@@ -20,7 +25,7 @@ class _BottomNavbarState extends State<BottomNavbar> {
 
   List<Widget> myWigets = <Widget>[
     const HomeView(),
-    const SkillDrawer(),
+    SheduleSkillPage(),
     const LiveScorePage(),
   ];
 

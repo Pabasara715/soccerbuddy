@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:soccerbuddy/Services/auth_service.dart';
 import 'package:soccerbuddy/components/my_button.dart';
 import 'package:soccerbuddy/components/my_textfield.dart';
@@ -75,9 +74,15 @@ class _RegisterPageState extends State<RegisterPage> {
         await FirebaseAuth.instance.createUserWithEmailAndPassword(
             email: emailController.text, password: passwordController.text);
         final user = users(
-          username: emailController.text.trim(),
-          password: passwordController.text.trim(),
-        );
+            id: emailController.text.trim(),
+            username: emailController.text.trim(),
+            password: passwordController.text.trim(),
+            events: [
+              {
+                'name': 'Sample Event',
+                'start_time': '2023-01-01 10:00 AM',
+              }
+            ]);
         createUser(user);
       } else {
         Navigator.pop(context);
