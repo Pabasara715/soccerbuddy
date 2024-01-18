@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart';
-import 'package:soccerbuddy/view/home/Pages/LiveScorePage/soccermodel.dart';
+import 'package:soccerbuddy/models/soccermodel.dart';
 
 class SoccerApi {
   final String apiUrl = "https://v3.football.api-sports.io/fixtures?live=all";

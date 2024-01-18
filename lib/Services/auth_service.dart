@@ -39,6 +39,7 @@ class AuthService {
           password: "google.user",
           events: [
             {
+              'id': "sampleID",
               'name': 'Sample Event',
               'start_time': '2023-01-01 10:00 AM',
             }

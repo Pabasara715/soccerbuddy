@@ -1,4 +1,3 @@
-import 'package:soccerbuddy/models/trainingPlan.dart';
 import 'package:soccerbuddy/models/users.dart';
 
 class Skill {
@@ -7,7 +6,7 @@ class Skill {
   String skillDescription = "";
   String photoUrl = "";
   List<String> skillSteps = [];
-  List<trainingPlan> relatedTrainingPlans = [];
+
   List<users> watchingUsers = [];
 
   Skill(

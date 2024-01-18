@@ -3,8 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:soccerbuddy/common/common.dart';
-import 'package:soccerbuddy/common_widget/round_button.dart';
-import 'package:soccerbuddy/models/skill.dart';
 import 'add_schedule_view.dart';
 
 class WorkoutScheduleView extends StatefulWidget {
@@ -16,13 +14,10 @@ class WorkoutScheduleView extends StatefulWidget {
   State<WorkoutScheduleView> createState() => _WorkoutScheduleViewState();
 }
 
-final user = FirebaseAuth.instance.currentUser!;
-
 class _WorkoutScheduleViewState extends State<WorkoutScheduleView> {
   @override
   void initState() {
     super.initState();
-
     _selectedDateAppBBar = DateTime.now();
     setDayEventWorkoutList();
   }
@@ -32,65 +27,29 @@ class _WorkoutScheduleViewState extends State<WorkoutScheduleView> {
   late DateTime _selectedDateAppBBar;
 
   Map<String, dynamic> userData = {};
-  
-  void getUserData(String username) async {
+  List workoutArray = [];
+
+  Future<void> getUserData(String username) async {
     var collection = FirebaseFirestore.instance.collection('Users');
     var docSnapshot =
         await collection.where('Username', isEqualTo: username).get();
     if (docSnapshot.docs.isNotEmpty) {
       var doc = docSnapshot.docs.first;
       userData = doc.data();
-      print(userData);
+      workoutArray = userData['events'];
+      print(workoutArray);
     }
   }
 
-  List eventArr = [
-    {
-      "name": "Ab Workout",
-      "start_time": "13/12/2023 07:30 AM",
-    },
-    {
-      "name": "Upperbody Workout",
-      "start_time": "13/12/2023 07:00 AM",
-    },
-    {
-      "name": "Lowerbody Workout",
-      "start_time": "25/05/2023 03:00 PM",
-    },
-    {
-      "name": "Ab Workout",
-      "start_time": "26/05/2023 07:30 AM",
-    },
-    {
-      "name": "Upperbody Workout",
-      "start_time": "13/12/2023 09:00 AM",
-    },
-    {
-      "name": "Lowerbody Workout",
-      "start_time": "13/12/2023 03:00 AM",
-    },
-    {
-      "name": "Ab Workout",
-      "start_time": "13/12/2023 07:30 AM",
-    },
-    {
-      "name": "Upperbody Workout",
-      "start_time": "13/12/2023 09:00 AM",
-    },
-    {
-      "name": "Lowerbody Workout",
-      "start_time": "13/12/2023 03:00 PM",
-    }
-  ];
-
   List selectDayEventArr = [];
 
-  void setDayEventWorkoutList() {
-    getUserData(user.email!);
+  Future<void> setDayEventWorkoutList() async {
+    await getUserData(FirebaseAuth.instance.currentUser!.email!);
     var date = dateToStartDate(_selectedDateAppBBar);
-    selectDayEventArr = eventArr.map((wObj) {
+    selectDayEventArr = workoutArray.map((wObj) {
       return {
         "name": wObj["name"],
+        "id": wObj["id"],
         "start_time": wObj["start_time"],
         "date": stringToDate(wObj["start_time"].toString(),
             formatStr: "dd/MM/yyyy hh:mm aa")
@@ -102,6 +61,43 @@ class _WorkoutScheduleViewState extends State<WorkoutScheduleView> {
     if (mounted) {
       setState(() {});
     }
+
+    print('setDayEventWorkoutList() called');
+  }
+
+  Future<void> deleteEvent(String username, String eventId) async {
+    CollectionReference usersCollection =
+        FirebaseFirestore.instance.collection('Users');
+
+    try {
+      QuerySnapshot querySnapshot =
+          await usersCollection.where('Username', isEqualTo: username).get();
+
+      if (querySnapshot.docs.isNotEmpty) {
+        DocumentReference userDocumentRef = querySnapshot.docs.first.reference;
+
+        DocumentSnapshot userDocSnapshot = await userDocumentRef.get();
+        List events = List.from(userDocSnapshot['events']);
+
+        int eventIndex = events.indexWhere((event) => event['id'] == eventId);
+
+        if (eventIndex != -1) {
+          events.removeAt(eventIndex);
+
+          await userDocumentRef.update({'events': events});
+
+          print(
+              'Event with ID $eventId deleted from user with username: $username');
+        } else {
+          print('Event with ID $eventId not found.');
+        }
+      } else {
+        print(
+            'User with username $username not found. Consider creating the user first.');
+      }
+    } catch (e) {
+      print('Error deleting event from user: $e');
+    }
   }
 
   @override
@@ -111,26 +107,8 @@ class _WorkoutScheduleViewState extends State<WorkoutScheduleView> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         centerTitle: true,
+        automaticallyImplyLeading: false,
         elevation: 0,
-        leading: InkWell(
-          onTap: () {
-            Navigator.pop(context);
-          },
-          child: Container(
-            margin: const EdgeInsets.all(8),
-            height: 40,
-            width: 40,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-                color: Colors.white, borderRadius: BorderRadius.circular(10)),
-            child: Image.asset(
-              "assets/img/back_btn.png",
-              width: 25,
-              height: 25,
-              fit: BoxFit.contain,
-            ),
-          ),
-        ),
         title: const Text(
           "Workout Schedule",
           style: TextStyle(
@@ -172,10 +150,10 @@ class _WorkoutScheduleViewState extends State<WorkoutScheduleView> {
               width: double.maxFinite,
               height: double.maxFinite,
               decoration: BoxDecoration(
-                gradient: LinearGradient(
-                    colors: [Colors.redAccent, Colors.blue],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter),
+                gradient: LinearGradient(colors: [
+                  Colors.redAccent,
+                  Color.fromARGB(255, 14, 70, 116)
+                ], begin: Alignment.topCenter, end: Alignment.bottomCenter),
                 borderRadius: BorderRadius.circular(10.0),
               ),
             ),
@@ -213,7 +191,7 @@ class _WorkoutScheduleViewState extends State<WorkoutScheduleView> {
                             if (slotArr.isNotEmpty)
                               Expanded(
                                   child: Stack(
-                                alignment: Alignment.centerLeft,
+                                alignment: Alignment.center,
                                 children: slotArr.map((sObj) {
                                   var min = (sObj["date"] as DateTime).minute;
                                   //(0 to 2)
@@ -244,7 +222,7 @@ class _WorkoutScheduleViewState extends State<WorkoutScheduleView> {
                                                   mainAxisSize:
                                                       MainAxisSize.min,
                                                   crossAxisAlignment:
-                                                      CrossAxisAlignment.start,
+                                                      CrossAxisAlignment.center,
                                                   children: [
                                                     Text(
                                                       sObj["name"].toString(),
@@ -271,15 +249,87 @@ class _WorkoutScheduleViewState extends State<WorkoutScheduleView> {
                                                     const SizedBox(
                                                       height: 15,
                                                     ),
-                                                    RoundButton(
-                                                        title: "Mark Done",
-                                                        onPressed: () {}),
+                                                    InkWell(
+                                                      onTap: () async {
+                                                        var s = sObj["id"]
+                                                            .toString();
+                                                        await deleteEvent(
+                                                            FirebaseAuth
+                                                                .instance
+                                                                .currentUser!
+                                                                .email!,
+                                                            s);
+                                                        await setDayEventWorkoutList();
+                                                        ScaffoldMessenger.of(
+                                                                context)
+                                                            .showSnackBar(
+                                                                SnackBar(
+                                                          backgroundColor:
+                                                              Colors.green,
+                                                          content: Text(
+                                                            'Work Out Deleted from the list Successfully',
+                                                            style: TextStyle(
+                                                              color:
+                                                                  Colors.white,
+                                                              fontSize: 16.0,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                            ),
+                                                          ),
+                                                        ));
+                                                        Navigator.pop(context);
+                                                      },
+                                                      child: Container(
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: Colors.black,
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(25),
+                                                        ),
+                                                        width: 100,
+                                                        height: 50,
+                                                        alignment:
+                                                            Alignment.center,
+                                                        child: Text(
+                                                          'Mark Done',
+                                                          style: TextStyle(
+                                                              color: Colors
+                                                                  .white), // Change text style as needed
+                                                        ),
+                                                      ),
+                                                    ),
                                                     const SizedBox(
                                                       height: 15,
                                                     ),
-                                                    RoundButton(
-                                                        title: "Unmark Done",
-                                                        onPressed: () {}),
+                                                    InkWell(
+                                                      onTap: () {
+                                                        Navigator.pop(context);
+                                                      },
+                                                      child: Container(
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          color: Colors.black,
+                                                          borderRadius:
+                                                              BorderRadius
+                                                                  .circular(25),
+                                                        ),
+                                                        width: 100,
+                                                        height: 50,
+                                                        alignment:
+                                                            Alignment.center,
+                                                        child: Text(
+                                                          'Not Done',
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.white),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    const SizedBox(
+                                                      height: 15,
+                                                    ),
                                                   ],
                                                 ),
                                               ),
@@ -331,14 +381,14 @@ class _WorkoutScheduleViewState extends State<WorkoutScheduleView> {
         ],
       ),
       floatingActionButton: InkWell(
-        onTap: () {
-          getUserData(user.email!);
-          Navigator.push(
+        onTap: () async {
+          await Navigator.push(
               context,
               MaterialPageRoute(
                   builder: (context) => AddScheduleView(
                         date: _selectedDateAppBBar,
                       )));
+          setDayEventWorkoutList();
         },
         child: Container(
           width: 55,

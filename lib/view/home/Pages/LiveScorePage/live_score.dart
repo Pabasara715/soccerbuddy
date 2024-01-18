@@ -13,9 +13,10 @@ class _LiveScorePageState extends State<LiveScorePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 230, 43, 66),
+      backgroundColor: Color.fromARGB(255, 0, 0, 0),
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 230, 43, 66),
+        backgroundColor: Color.fromARGB(255, 0, 0, 0),
+        automaticallyImplyLeading: false,
         elevation: 0.0,
         title: const Text(
           "LIVE SCORE",

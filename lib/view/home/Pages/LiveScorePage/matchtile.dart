@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'soccermodel.dart';
+import '../../../../models/soccermodel.dart';
 
 typedef MatchTileCallback = void Function(int index);
 

@@ -9,7 +9,6 @@ import 'package:soccerbuddy/view/home/Pages/Shedule_Skill.dart';
 import 'package:soccerbuddy/view/home/Pages/Skills/skill_drawer.dart';
 import 'package:soccerbuddy/view/home/Pages/Skills/skill_step_detials.dart';
 import 'package:soccerbuddy/view/home/Pages/WorkOutSchedule/workout_schedule_view.dart';
-import 'package:soccerbuddy/view/home/Pages/home_view.dart';
 
 class BottomNavbar extends StatefulWidget {
   const BottomNavbar({super.key});
@@ -21,11 +20,11 @@ class BottomNavbar extends StatefulWidget {
 class _BottomNavbarState extends State<BottomNavbar> {
   int _page = 0;
   final PageStorageBucket pageBucket = PageStorageBucket();
-  Widget currentTab = const HomeView();
+  Widget currentTab = const SkillDrawer();
 
   List<Widget> myWigets = <Widget>[
-    const HomeView(),
-    SheduleSkillPage(),
+    const SkillDrawer(),
+    WorkoutScheduleView(),
     const LiveScorePage(),
   ];
 
@@ -42,7 +41,7 @@ class _BottomNavbarState extends State<BottomNavbar> {
       body: PageStorage(bucket: pageBucket, child: currentTab),
       bottomNavigationBar: CurvedNavigationBar(
           backgroundColor: Colors.white,
-          color: Colors.grey,
+          color: const Color.fromARGB(255, 0, 0, 0),
           animationDuration: const Duration(milliseconds: 300),
           onTap: (index) {
             setState(() {

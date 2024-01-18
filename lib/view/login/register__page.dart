@@ -38,37 +38,6 @@ class _RegisterPageState extends State<RegisterPage> {
           );
         });
 
-    void wrongEmailMessage() {
-      showDialog(
-          context: context,
-          builder: (context) {
-            return const AlertDialog(
-              title: Text('Incorrect Email'),
-            );
-          });
-    }
-
-    void weekPasswordMessage() {
-      showDialog(
-          context: context,
-          builder: (context) {
-            return const AlertDialog(
-              title: Text('Password should be at least 6 characters'),
-            );
-          });
-    }
-
-    void showPasswordMismatchError() {
-      showDialog(
-          context: context,
-          builder: (context) {
-            return const AlertDialog(
-              title: Text('Passwords not match'),
-            );
-          });
-    }
-
-    //creating a user
     try {
       if (passwordController.text == confirmPasswordController.text) {
         await FirebaseAuth.instance.createUserWithEmailAndPassword(
@@ -79,25 +48,41 @@ class _RegisterPageState extends State<RegisterPage> {
             password: passwordController.text.trim(),
             events: [
               {
-                'name': 'Sample Event',
-                'start_time': '2023-01-01 10:00 AM',
+                'id': "sampleID",
+                'name': "Sample Event",
+                'start_time': "18/01/2020 03:27 AM",
               }
             ]);
         createUser(user);
       } else {
         Navigator.pop(context);
-        showPasswordMismatchError();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Passwords do not match'),
+            backgroundColor: Colors.red,
+          ),
+        );
         return;
       }
-      // ignore: use_build_context_synchronously
-      Navigator.pop(context); //to pop loading circle
-    } on FirebaseAuthException catch (e) {
-      // ignore: use_build_context_synchronously
+
       Navigator.pop(context);
-      if (e.code == 'invalid-credential') {
-        wrongEmailMessage();
+    } on FirebaseAuthException catch (e) {
+      print(e.code);
+      Navigator.pop(context);
+      if (e.code == 'email-already-in-use') {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('The email is already in use by another account.'),
+            backgroundColor: Colors.red,
+          ),
+        );
       } else if (e.code == 'weak-password') {
-        weekPasswordMessage();
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Week password, please enter more than 6 characters'),
+            backgroundColor: Colors.red,
+          ),
+        );
       }
     }
   }
@@ -186,10 +171,6 @@ class _RegisterPageState extends State<RegisterPage> {
                       ),
                       const SizedBox(
                         width: 20,
-                      ),
-                      SquareTile(
-                        imagePath: 'assets/img/facebook.png',
-                        onTap: () => AuthService().signInWithGoogle(),
                       ),
                     ],
                   ),

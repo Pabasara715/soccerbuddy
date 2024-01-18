@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:soccerbuddy/view/home/Pages/LiveScorePage/goalstat.dart';
 import 'package:soccerbuddy/view/home/Pages/LiveScorePage/matchstat.dart';
 import 'package:soccerbuddy/view/home/Pages/LiveScorePage/matchtile.dart';
-import 'package:soccerbuddy/view/home/Pages/LiveScorePage/soccermodel.dart';
+import 'package:soccerbuddy/models/soccermodel.dart';
 
 class Pagebody extends StatefulWidget {
   final List<SoccerMatch>? allmatches;
@@ -43,8 +43,7 @@ class _PagebodyState extends State<Pagebody> {
                           color: Colors.white,
                           fontSize: 20,
                           fontWeight: FontWeight.w500),
-                    )), // Placeholder or alternative content
-
+                    )),
                   if (widget.allmatches != null &&
                       widget.allmatches!.isNotEmpty)
                     goalStat(
@@ -54,8 +53,7 @@ class _PagebodyState extends State<Pagebody> {
                       widget.allmatches![selectedMatchIndex].goal.away,
                     )
                   else
-                    Container(), // Placeholder or alternative content
-
+                    Container(),
                   if (widget.allmatches != null &&
                       widget.allmatches!.isNotEmpty)
                     teamStat(
@@ -64,7 +62,7 @@ class _PagebodyState extends State<Pagebody> {
                       widget.allmatches![selectedMatchIndex].away.name,
                     )
                   else
-                    Container(), // Placeholder or alternative content
+                    Container(),
                 ],
               ),
             ),

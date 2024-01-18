@@ -29,29 +29,45 @@ class _LoginPageState extends State<LoginPage> {
           );
         });
 
-    void wrongEmailMessage() {
-      showDialog(
-          context: context,
-          builder: (context) {
-            return const AlertDialog(
-              title: Text('Incorrect Email'),
-            );
-          });
-    }
-
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: emailController.text, password: passwordController.text);
-
-      // ignore: use_build_context_synchronously
-      Navigator.pop(context); //to pop loading circle
-    } on FirebaseAuthException catch (e) {
-      // ignore: use_build_context_synchronously
       Navigator.pop(context);
-      if (e.code == 'invalid-credential') {
-        wrongEmailMessage();
+    } on FirebaseAuthException catch (e) {
+      Navigator.pop(context);
+      print(e.code);
+      if (e.code == 'invalid-email') {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Colors.red,
+            content: Text(
+              'Invalid email',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        );
+        print(e.code);
+      } else if (e.code == 'invalid-credential') {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            backgroundColor: Colors.red,
+            content: Text(
+              'Password or Email Incorrect',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        );
       }
     }
+
+    final user = FirebaseAuth.instance.currentUser!;
+    print(user);
   }
 
   @override
@@ -144,10 +160,6 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       const SizedBox(
                         width: 20,
-                      ),
-                      SquareTile(
-                        imagePath: 'assets/img/facebook.png',
-                        onTap: () => AuthService().signInWithGoogle(),
                       ),
                     ],
                   ),

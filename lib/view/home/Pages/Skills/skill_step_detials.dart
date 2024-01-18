@@ -1,26 +1,43 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:readmore/readmore.dart';
+import 'package:soccerbuddy/common_widget/round_button.dart';
+import 'package:soccerbuddy/common_widget/step_detail_row.dart';
 import 'package:soccerbuddy/models/skill.dart';
-import '../../../../common_widget/round_button.dart';
-import '../../../../common_widget/step_detail_row.dart';
 
 class SkillStepDetail extends StatefulWidget {
   final Skill skill;
-  const SkillStepDetail({super.key, required this.skill});
+
+  const SkillStepDetail({Key? key, required this.skill}) : super(key: key);
 
   @override
   State<SkillStepDetail> createState() => _SkillStepDetailState();
 }
 
 class _SkillStepDetailState extends State<SkillStepDetail> {
-  late Map eObj;
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  Future<String> getImageUrl(String username) async {
+    try {
+      final storageRef = FirebaseStorage.instance.ref();
+      final imageRef = storageRef.child('SkillThumbs/$username.jpg');
+      final String downloadUrl = await imageRef.getDownloadURL();
+      return downloadUrl;
+    } catch (e) {
+      print('Error getting image URL: $e');
+      return '';
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     var skillname = widget.skill.skillName;
     var media = MediaQuery.of(context).size;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -30,20 +47,6 @@ class _SkillStepDetailState extends State<SkillStepDetail> {
           onTap: () {
             Navigator.pop(context);
           },
-          child: Container(
-            margin: const EdgeInsets.all(8),
-            height: 40,
-            width: 40,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-                color: Colors.white, borderRadius: BorderRadius.circular(10)),
-            child: Image.asset(
-              "assets/img/back_btn.png",
-              width: 25,
-              height: 25,
-              fit: BoxFit.contain,
-            ),
-          ),
         ),
         title: Text(
           skillname,
@@ -57,33 +60,48 @@ class _SkillStepDetailState extends State<SkillStepDetail> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Stack(
-                alignment: Alignment.center,
-                children: [
-                  Container(
-                    width: media.width,
-                    height: media.width * 0.43,
-                    decoration: BoxDecoration(
-                        gradient: LinearGradient(colors: [
-                          const Color.fromARGB(255, 74, 235, 79),
-                          Color.fromARGB(255, 136, 250, 43)
-                        ]),
-                        borderRadius: BorderRadius.circular(20)),
-                    child: Image.asset(
-                      "assets/img/video_temp.png",
-                      width: media.width,
-                      height: media.width * 0.43,
-                      fit: BoxFit.contain,
-                    ),
-                  ),
-                  Container(
-                    width: media.width,
-                    height: media.width * 0.43,
-                    decoration: BoxDecoration(
-                        color: Colors.black.withOpacity(0.2),
-                        borderRadius: BorderRadius.circular(20)),
-                  ),
-                ],
+              FutureBuilder<String>(
+                future: getImageUrl(skillname),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    if (snapshot.hasError || snapshot.data == null) {
+                      return Text('Error loading image');
+                    }
+
+                    return Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: Container(
+                                width: media.width,
+                                height: media.width * 0.43,
+                                child: Image.network(
+                                  snapshot.data!,
+                                  width: media.width,
+                                  height: media.width * 0.43,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                            Container(
+                              width: media.width,
+                              height: media.width * 0.43,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    );
+                  } else {
+                    return Center(child: CircularProgressIndicator());
+                  }
+                },
               ),
               const SizedBox(
                 height: 15,
@@ -147,7 +165,7 @@ class _SkillStepDetailState extends State<SkillStepDetail> {
                     sObj: {
                       'no': index + 1,
                       'title': 'Step ${index + 1}',
-                      'detail': step
+                      'detail': step,
                     },
                     isLast: index == widget.skill.skillSteps.length - 1,
                   );
@@ -157,11 +175,12 @@ class _SkillStepDetailState extends State<SkillStepDetail> {
                 height: 15,
               ),
               RoundButton(
-                  title: "OK",
-                  elevation: 0,
-                  onPressed: () {
-                    Navigator.pop(context);
-                  }),
+                title: "OK",
+                elevation: 0,
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              ),
               const SizedBox(
                 height: 15,
               ),

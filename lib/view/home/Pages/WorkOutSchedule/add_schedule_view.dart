@@ -2,10 +2,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:soccerbuddy/common/common.dart';
 import '../../../../common_widget/round_button.dart';
 import 'package:uuid/uuid.dart';
+import './workout_schedule_view.dart';
 
 class AddScheduleView extends StatefulWidget {
   final DateTime date;
@@ -19,11 +21,18 @@ class _AddScheduleViewState extends State<AddScheduleView> {
   _AddScheduleViewState() {
     selectedValue = workoutList[0];
   }
-  final workoutList = ['Skill1', "Skill2", "skill3"];
+  final workoutList = [
+    'Passing',
+    "Dribbling",
+    "Heading",
+    'Shooting',
+    "Tackling"
+  ];
   String selectedValue = "Skill1";
   String eventId = "";
 
   final user = FirebaseAuth.instance.currentUser!;
+
   void addEventDataToUser(
       String username, Map<String, dynamic> newEvent) async {
     CollectionReference usersCollection =
@@ -51,14 +60,13 @@ class _AddScheduleViewState extends State<AddScheduleView> {
   }
 
   TextEditingController timeController = TextEditingController();
-  String selectedType = "Skill1"; // default value
-  DateTime selectedDateTime =
-      DateTime.now(); // store the selected date and time
+  String selectedType = "Skill1";
+  DateTime selectedDateTime = DateTime.now();
 
   @override
   void initState() {
     super.initState();
-    // Set initial time value to the current time
+
     updateTime(DateTime.now());
   }
 
@@ -68,15 +76,10 @@ class _AddScheduleViewState extends State<AddScheduleView> {
   }
 
   void updateTime(DateTime dateTime) {
-    // Format the time in "hh:mm a" format
     String formattedTime = DateFormat('hh:mm a').format(dateTime);
-
-    // Format the complete date and time in "dd/MM/yyyy" format
     String formattedDateTime = DateFormat('dd/MM/yyyy').format(widget.date);
-
-    // Combine the date and time in the desired format
     timeController.text = '$formattedDateTime $formattedTime';
-    selectedDateTime = dateTime; // store the selected date and time
+    selectedDateTime = dateTime;
   }
 
   @override
@@ -181,7 +184,7 @@ class _AddScheduleViewState extends State<AddScheduleView> {
           Spacer(),
           RoundButton(
               title: "ADD WORKOUT",
-              onPressed: () {
+              onPressed: () async {
                 updateTime(newtime);
                 eventId = Uuid().v4();
                 addEventDataToUser(user.email!, {
@@ -189,9 +192,20 @@ class _AddScheduleViewState extends State<AddScheduleView> {
                   "name": selectedValue,
                   "start_time": timeController.text,
                 });
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                  backgroundColor: Colors.green,
+                  content: Text(
+                    'Work Out Added Successfully',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ));
               }),
           const SizedBox(
-            height: 20,
+            height: 300,
           ),
         ]),
       ),
