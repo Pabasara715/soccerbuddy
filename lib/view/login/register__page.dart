@@ -83,6 +83,13 @@ class _RegisterPageState extends State<RegisterPage> {
             backgroundColor: Colors.red,
           ),
         );
+      } else if (e.code == 'invalid-email') {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Enter a Valid Email'),
+            backgroundColor: Colors.red,
+          ),
+        );
       }
     }
   }

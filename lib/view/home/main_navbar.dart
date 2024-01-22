@@ -5,7 +5,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:soccerbuddy/common_widget/step_detail_row.dart';
 import 'package:soccerbuddy/models/skill.dart';
 import 'package:soccerbuddy/view/home/Pages/LiveScorePage/live_score.dart';
-import 'package:soccerbuddy/view/home/Pages/Shedule_Skill.dart';
+
 import 'package:soccerbuddy/view/home/Pages/Skills/skill_drawer.dart';
 import 'package:soccerbuddy/view/home/Pages/Skills/skill_step_detials.dart';
 import 'package:soccerbuddy/view/home/Pages/WorkOutSchedule/workout_schedule_view.dart';

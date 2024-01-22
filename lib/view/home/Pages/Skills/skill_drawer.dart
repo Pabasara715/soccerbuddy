@@ -140,7 +140,7 @@ class _SkillDrawerState extends State<SkillDrawer> {
                                 displayName,
                                 style: const TextStyle(
                                   color: Color.fromARGB(255, 255, 255, 255),
-                                  fontSize: 18,
+                                  fontSize: 14,
                                   fontWeight: FontWeight.w700,
                                 ),
                               ),

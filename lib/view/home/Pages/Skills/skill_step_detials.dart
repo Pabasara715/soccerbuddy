@@ -47,6 +47,13 @@ class _SkillStepDetailState extends State<SkillStepDetail> {
           onTap: () {
             Navigator.pop(context);
           },
+          child: Container(
+            padding: EdgeInsets.all(16.0),
+            child: Icon(
+              Icons.arrow_back,
+              size: 24.0,
+            ),
+          ),
         ),
         title: Text(
           skillname,

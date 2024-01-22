@@ -41,7 +41,7 @@ class AuthService {
             {
               'id': "sampleID",
               'name': 'Sample Event',
-              'start_time': '2023-01-01 10:00 AM',
+              'start_time': '19/01/2024 10:49 AM',
             }
           ],
         );
